@@ -47,6 +47,7 @@ public class TrajectorySimilarityUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         epsilon = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        time = new javax.swing.JLabel();
 
         fileChooser.setCurrentDirectory(new java.io.File("/home/takis/NetBeansProjects/TrajectorySimilarity/datasets"));
         fileChooser.setDialogTitle("Choose a File");
@@ -112,17 +113,20 @@ public class TrajectorySimilarityUI extends javax.swing.JFrame {
                         .addComponent(label2)
                         .addGap(4, 4, 4)
                         .addComponent(OpenFile2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(epsilon, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(text, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(Compute)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(time)
+                                .addGap(32, 32, 32)
+                                .addComponent(Compute))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(text, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -141,8 +145,10 @@ public class TrajectorySimilarityUI extends javax.swing.JFrame {
                     .addComponent(epsilon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
-                .addComponent(Compute)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Compute)
+                    .addComponent(time))
+                .addContainerGap(124, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -221,7 +227,9 @@ public class TrajectorySimilarityUI extends javax.swing.JFrame {
 
     private void ComputeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComputeActionPerformed
         TrajectorySimilarity.setEpsilon(Double.parseDouble(epsilon.getText()));
+        long start = System.currentTimeMillis();
         text.setText(TrajectorySimilarity.computeSimilarity().toString());
+        time.setText((System.currentTimeMillis()- start)+ "ms");
     }//GEN-LAST:event_ComputeActionPerformed
 
     private void epsilonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_epsilonActionPerformed
@@ -275,5 +283,6 @@ public class TrajectorySimilarityUI extends javax.swing.JFrame {
     private javax.swing.JLabel label1;
     private javax.swing.JLabel label2;
     private javax.swing.JTextField text;
+    private javax.swing.JLabel time;
     // End of variables declaration//GEN-END:variables
 }
