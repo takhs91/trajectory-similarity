@@ -6,10 +6,13 @@
 package trajectorysimilarity;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -21,36 +24,78 @@ public class TrajectorySimilarity {
     private static Coords[] second;
     private static Double epsilon;
 
-//    /**
-//     * @param args the command line arguments
-//     */  
-//    public static void main(String[] args) {
-////        LcsString seq = new LcsString("<p>the quick brown fox</p>", "<p>the <b>Fast</b> brown dog</p>");
-////        System.out.println("LCS: " + seq.getLcsLength());
-////        System.out.println("Edit Dist: " + seq.getMinEditDistance());
-////        System.out.println("Backtrack: " + seq.backtrack());
-//
-//        
-//        Coords[] first;
-//        Coords[] second;
-//        first = readDatafromFile("/10000Points/4798.txt");
-//        second = readDatafromFile("/10000Points/5075.txt");
-//        LcsCoordinates test = new LcsCoordinates(first, second, 0.01);
-//        System.out.println("LCS: " + test.getLcsLength());
-//        //   System.out.println("Edit Dist: " + test.getMinEditDistance());
-//        //  System.out.println("Backtrack: " + test.backtrack().toString());
-//        System.out.println("Similarity: " + test.getSimilarity());
-//
-//    }
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+//        LcsString seq = new LcsString("<p>the quick brown fox</p>", "<p>the <b>Fast</b> brown dog</p>");
+//        System.out.println("LCS: " + seq.getLcsLength());
+//        System.out.println("Edit Dist: " + seq.getMinEditDistance());
+//        System.out.println("Backtrack: " + seq.backtrack());
+
+        //     Coords[] first;
+        //    Coords[] second;
+        first = readDatafromFile("/1000Points/5099.txt");
+        second = readDatafromFile("/10000Points/5075.txt");
+        LcsCoordinates test = new LcsCoordinates(first, second, 0.01);
+        System.out.println("LCS: " + test.calculateLcsGetFirstMatch());
+        System.out.println("LCS: " + test.getLcsLength());
+        //   System.out.println("Edit Dist: " + test.getMinEditDistance());
+        //  System.out.println("Backtrack: " + test.backtrack().toString());
+        System.out.println("Similarity: " + test.getSimilarity());
+        epsilon = 0.01;
+        System.out.println("most similar: " + getMostSimilarSubset(2000));
+        
+    }
     
-    public static Double computeSimilarity(){
-        if (first!=null && second!=null && getEpsilon()!=null){
+    public static Double computeSimilarity() {
+        if (first != null && second != null && getEpsilon() != null) {
             LcsCoordinates test = new LcsCoordinates(first, second, getEpsilon());
             return test.getSimilarity();
         }
         return null;
     }
 
+    /*O((n * n+ delta)*number of elements that two trajectories have in common) computationaly
+     expensive but makes sure to find a subset with the highest similarity*/    
+    public static Double getMostSimilarSubset(int delta) {
+        if (first != null && second != null && getEpsilon() != null) {
+            int i = 0;
+            Double max = 0.0;
+            int maxi = 0;
+            while (i < second.length - delta) {
+                Coords[] temp = new Coords[delta];
+                System.arraycopy(second, i, temp, 0, delta);
+                LcsCoordinates test = new LcsCoordinates(first, temp, getEpsilon());
+                Integer lcs = test.calculateLcsGetFirstMatch();
+                Double sim = test.getSimilarity();
+                if (sim > max) {
+                    max = sim;
+                    maxi = i;
+                }
+                if (lcs != null && lcs != 0) {
+                    i = i + lcs;
+                    //in a region containing matches the next region that possibly holds best similarity
+                    //should be starting from the first match after the current position
+                } else {
+                    i = i + delta + 1;
+                    //nomatch at this space, jump over to the next region
+                }
+                temp = null;
+            }
+            //get the actual substring
+            Coords[] temp = new Coords[delta];
+            System.arraycopy(second, maxi, temp, 0, delta);
+            //LcsCoordinates test = new LcsCoordinates(first, temp, getEpsilon());
+            //System.out.println(test.backtrack().toString());
+            System.out.println(Arrays.toString(temp));
+            writeCoordsToFile(temp);
+            return max;
+        }
+        return null;
+        
+    }
+    
     public static Coords[] readDatafromFile(String file) {
         try (BufferedReader br = new BufferedReader(new FileReader("/home/takis/NetBeansProjects/TrajectorySimilarity/datasets" + file))) {
             String sCurrentLine;
@@ -67,11 +112,38 @@ public class TrajectorySimilarity {
         }
         return null;
     }
+    
+    public static void writeCoordsToFile(Coords[] coords) {
+        try {
+            
+            String content = "This is the content to write into file";
+            File file = new File("/home/takis/NetBeansProjects/TrajectorySimilarity/subsets/subset.txt");
 
-    /**
-     * @return the first
-     */
-    public static Coords[] getFirst() {
+            // if file doesnt exists, then create it
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (Coords coord : coords) {
+                bw.write(coord.getLatitude()+","+coord.getLongtitude()+"\n");
+            }
+            
+            bw.close();
+            
+            System.out.println("Done");
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+/**
+ * @return the first
+ */
+public static Coords[] getFirst() {
         return first;
     }
 

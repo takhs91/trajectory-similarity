@@ -13,18 +13,18 @@ import static java.lang.Math.abs;
  */
 public class Coords {
 
-    double latitude;
-    double longtitude;
+    private double latitude;
+    private double longtitude;
 
     @Override
     public boolean equals(Object o) {
         Coords c = (Coords) o;
-        return c.latitude == latitude && c.longtitude == longtitude;
+        return c.getLatitude() == getLatitude() && c.getLongtitude() == getLongtitude();
     }
 
     public boolean equals(Object o, double epsilon) {
         Coords c = (Coords) o;
-        return (abs(c.latitude - latitude) < epsilon) && (abs(c.longtitude - longtitude) < epsilon);
+        return (abs(c.getLatitude() - getLatitude()) < epsilon) && (abs(c.getLongtitude() - getLongtitude()) < epsilon);
     }
 
     public Coords(double x, double y) {
@@ -36,7 +36,35 @@ public class Coords {
     
     @Override
     public String toString(){
-        return "("+this.latitude+","+this.longtitude+")";
+        return "("+this.getLatitude()+","+this.getLongtitude()+")";
         
+    }
+
+    /**
+     * @return the latitude
+     */
+    public double getLatitude() {
+        return latitude;
+    }
+
+    /**
+     * @param latitude the latitude to set
+     */
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    /**
+     * @return the longtitude
+     */
+    public double getLongtitude() {
+        return longtitude;
+    }
+
+    /**
+     * @param longtitude the longtitude to set
+     */
+    public void setLongtitude(double longtitude) {
+        this.longtitude = longtitude;
     }
 }

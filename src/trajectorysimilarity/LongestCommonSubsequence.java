@@ -71,6 +71,34 @@ public abstract class LongestCommonSubsequence<VALUE> {
         }
     }
 
+    public Integer calculateLcsGetFirstMatch() {
+//        if (c != null) {
+//            return;
+//        }
+        Integer match = null;
+        boolean flag = true;
+        c = new int[lengthOfX() + 1][];
+        for (int i = 0; i < c.length; i++) {
+            c[i] = new int[lengthOfY() + 1];
+        }
+
+        for (int i = 1; i < c.length; i++) {
+            for (int j = 1; j < c[i].length; j++) {
+                if (isXYEqual(i, j)) {
+                    c[i][j] = c[i - 1][j - 1] + 1;
+                    if (flag && j!=1) {
+                        match = j-1;
+                        //match = j;
+                        flag = false;
+                    }
+                } else {
+                    c[i][j] = max(c[i][j - 1], c[i - 1][j]);
+                }
+            }
+        }
+        return match;
+    }
+
     public int getLcsLength() {
         calculateLcs();
 
