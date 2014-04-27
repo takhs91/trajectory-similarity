@@ -326,18 +326,25 @@ public class TrajectorySimilarityUI extends javax.swing.JFrame {
     }//GEN-LAST:event_textActionPerformed
 
     private void ComputeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComputeActionPerformed
-        TrajectorySimilarity.setEpsilon(Double.parseDouble(epsilon.getText()));
-        long start = System.currentTimeMillis();
-        Double similarity = TrajectorySimilarity.computeSimilarity();
-        if (similarity != null) {
-            text.setText(TrajectorySimilarity.computeSimilarity() + "");
-            time.setText((System.currentTimeMillis() - start) + "ms");
-            map.pack();
-            map.setVisible(true);
-            if (points.isSelected()) {
-                drawAsPoints();
-            } else {
-                drawAsPath();
+        if (!epsilon.getText().isEmpty()) {
+            try {
+                TrajectorySimilarity.setEpsilon(Double.parseDouble(epsilon.getText()));
+            } catch (NumberFormatException e) {
+            }
+            if (TrajectorySimilarity.getEpsilon() > 0) {
+                long start = System.currentTimeMillis();
+                Double similarity = TrajectorySimilarity.computeSimilarity();
+                if (similarity != null) {
+                    text.setText(TrajectorySimilarity.computeSimilarity() + "");
+                    time.setText((System.currentTimeMillis() - start) + "ms");
+                    map.pack();
+                    map.setVisible(true);
+                    if (points.isSelected()) {
+                        drawAsPoints();
+                    } else {
+                        drawAsPath();
+                    }
+                }
             }
         }
     }//GEN-LAST:event_ComputeActionPerformed
@@ -523,26 +530,33 @@ public class TrajectorySimilarityUI extends javax.swing.JFrame {
     }//GEN-LAST:event_epsilonActionPerformed
 
     private void MostSimilarPartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MostSimilarPartActionPerformed
-        // TODO add your handling code here:
-        TrajectorySimilarity.setEpsilon(Double.parseDouble(epsilon.getText()));
-        int Delta = Integer.parseInt(delta.getText());
-        long start = System.currentTimeMillis();
-        Double similarity = TrajectorySimilarity.getMostSimilarSubset(Delta);
-        if (similarity != null) {
-            //text.setText(TrajectorySimilarity.computeSimilarity() + "");
-            time.setText((System.currentTimeMillis() - start) + "ms");
-            text.setText(TrajectorySimilarity.computeSimilarity() + "");
-            subsetsimilarity.setText(similarity + "");
-            map.pack();
-            map.setVisible(true);
+        if (!epsilon.getText().isEmpty() && !delta.getText().isEmpty()) {
+            int Delta = 1;
+            try {
+                TrajectorySimilarity.setEpsilon(Double.parseDouble(epsilon.getText()));
+                Delta = Integer.parseInt(delta.getText());
+            } catch (NumberFormatException e) {
+            }
+            if (Delta > 0 && TrajectorySimilarity.getEpsilon() > 0) {
+                long start = System.currentTimeMillis();
+                Double similarity = TrajectorySimilarity.getMostSimilarSubset(Delta);
+                if (similarity != null) {
+                    //text.setText(TrajectorySimilarity.computeSimilarity() + "");
+                    time.setText((System.currentTimeMillis() - start) + "ms");
+                    text.setText(TrajectorySimilarity.computeSimilarity() + "");
+                    subsetsimilarity.setText(similarity + "");
+                    map.pack();
+                    map.setVisible(true);
 
-            if (points.isSelected()) {
-                drawAsPoints();
-            } else {
-                drawAsPath();
+                    if (points.isSelected()) {
+                        drawAsPoints();
+                    } else {
+                        drawAsPath();
+                    }
+                }
+                TrajectorySimilarity.setSubset(null);
             }
         }
-        TrajectorySimilarity.setSubset(null);
     }//GEN-LAST:event_MostSimilarPartActionPerformed
 
     /**
