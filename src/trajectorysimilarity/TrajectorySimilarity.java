@@ -19,9 +19,10 @@ import java.util.Arrays;
  * @author takis
  */
 public class TrajectorySimilarity {
-    
+
     private static Coords[] first;
     private static Coords[] second;
+    private static Coords[] subset;
     private static Double epsilon;
 
     /**
@@ -44,10 +45,10 @@ public class TrajectorySimilarity {
         //  System.out.println("Backtrack: " + test.backtrack().toString());
         System.out.println("Similarity: " + test.getSimilarity());
         epsilon = 0.01;
-        System.out.println("most similar: " + getMostSimilarSubset(2000));
-        
+        System.out.println("most similar: " + getMostSimilarSubset(999));
+
     }
-    
+
     public static Double computeSimilarity() {
         if (first != null && second != null && getEpsilon() != null) {
             LcsCoordinates test = new LcsCoordinates(first, second, getEpsilon());
@@ -57,15 +58,24 @@ public class TrajectorySimilarity {
     }
 
     /*O((n * n+ delta)*number of elements that two trajectories have in common) computationaly
-     expensive but makes sure to find a subset with the highest similarity*/    
+     expensive but makes sure to find a subset with the highest similarity*/
     public static Double getMostSimilarSubset(int delta) {
         if (first != null && second != null && getEpsilon() != null) {
+            if (delta <= 0 || delta >= first.length) {
+                System.err.println("Delta has to be between 0 and Lq");
+                return null;
+            }
+            int size = first.length + delta;
+            if (second.length < size) {
+                System.err.println("Ls must be greater than Lq");
+                return null;
+            }
             int i = 0;
             Double max = 0.0;
             int maxi = 0;
-            while (i < second.length - delta) {
-                Coords[] temp = new Coords[delta];
-                System.arraycopy(second, i, temp, 0, delta);
+            while (i < second.length - size) {
+                Coords[] temp = new Coords[size];
+                System.arraycopy(second, i, temp, 0, size);
                 LcsCoordinates test = new LcsCoordinates(first, temp, getEpsilon());
                 Integer lcs = test.calculateLcsGetFirstMatch();
                 Double sim = test.getSimilarity();
@@ -78,24 +88,25 @@ public class TrajectorySimilarity {
                     //in a region containing matches the next region that possibly holds best similarity
                     //should be starting from the first match after the current position
                 } else {
-                    i = i + delta + 1;
+                    i = i + size + 1;
                     //nomatch at this space, jump over to the next region
                 }
                 temp = null;
             }
             //get the actual substring
-            Coords[] temp = new Coords[delta];
-            System.arraycopy(second, maxi, temp, 0, delta);
+            Coords[] temp = new Coords[size];
+            System.arraycopy(second, maxi, temp, 0, size);
             //LcsCoordinates test = new LcsCoordinates(first, temp, getEpsilon());
             //System.out.println(test.backtrack().toString());
-            System.out.println(Arrays.toString(temp));
-            writeCoordsToFile(temp);
+            //System.out.println(Arrays.toString(temp));
+            setSubset(temp);
+           // writeCoordsToFile(temp);
             return max;
         }
         return null;
-        
+
     }
-    
+
     public static Coords[] readDatafromFile(String file) {
         try (BufferedReader br = new BufferedReader(new FileReader("/home/takis/NetBeansProjects/TrajectorySimilarity/datasets" + file))) {
             String sCurrentLine;
@@ -112,10 +123,10 @@ public class TrajectorySimilarity {
         }
         return null;
     }
-    
+
     public static void writeCoordsToFile(Coords[] coords) {
         try {
-            
+
             String content = "This is the content to write into file";
             File file = new File("/home/takis/NetBeansProjects/TrajectorySimilarity/subsets/subset.txt");
 
@@ -123,27 +134,26 @@ public class TrajectorySimilarity {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            
+
             FileWriter fw = new FileWriter(file.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
             for (Coords coord : coords) {
-                bw.write(coord.getLatitude()+","+coord.getLongtitude()+"\n");
+                bw.write(coord.getLatitude() + "," + coord.getLongtitude() + "\n");
             }
-            
+
             bw.close();
-            
+
             System.out.println("Done");
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-/**
- * @return the first
- */
-public static Coords[] getFirst() {
+    /**
+     * @return the first
+     */
+    public static Coords[] getFirst() {
         return first;
     }
 
@@ -180,6 +190,20 @@ public static Coords[] getFirst() {
      */
     public static void setEpsilon(Double aEpsilon) {
         epsilon = aEpsilon;
+    }
+
+    /**
+     * @return the subset
+     */
+    public static Coords[] getSubset() {
+        return subset;
+    }
+
+    /**
+     * @param aSubset the subset to set
+     */
+    public static void setSubset(Coords[] aSubset) {
+        subset = aSubset;
     }
 
     public void listf(String directoryName, ArrayList<File> files) {

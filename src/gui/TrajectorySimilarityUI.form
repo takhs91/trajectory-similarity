@@ -37,6 +37,8 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.ButtonGroup" name="buttonGroup1">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
@@ -97,7 +99,7 @@
                           <Component id="label1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                           <Component id="OpenFile1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="71" max="32767" attributes="0"/>
+                          <EmptySpace pref="88" max="32767" attributes="0"/>
                           <Component id="label2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                           <Component id="OpenFile2" min="-2" max="-2" attributes="0"/>
@@ -119,6 +121,30 @@
                                   <Component id="text" min="-2" pref="81" max="-2" attributes="0"/>
                               </Group>
                           </Group>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="MostSimilarPart" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="paths" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="points" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="delta" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="subsetsimilarity" min="-2" pref="69" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -147,7 +173,24 @@
                       <Component id="Compute" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="time" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="124" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="paths" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="points" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="delta" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="subsetsimilarity" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="MostSimilarPart" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -211,6 +254,53 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="time">
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel3">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Delta:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="delta">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="500"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="MostSimilarPart">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Go"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MostSimilarPartActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel4">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Find the most similar part of S and Q"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="paths">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="buttonGroup1"/>
+            </Property>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value="Paths"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="points">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="buttonGroup1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Points"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel5">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Subset Similarity:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="subsetsimilarity">
         </Component>
       </SubComponents>
     </Container>

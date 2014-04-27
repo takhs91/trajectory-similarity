@@ -5,16 +5,13 @@
  */
 package trajectorysimilarity;
 
-import static java.lang.Math.abs;
 import static java.lang.Math.max;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class LongestCommonSubsequence<VALUE> {
 
     private int[][] c;
-    private ArrayList<DiffEntry<VALUE>> diff;
     private ArrayList<VALUE> backtrack;
 
     /**
@@ -111,10 +108,7 @@ public abstract class LongestCommonSubsequence<VALUE> {
         return ((double) c[lengthOfX()][lengthOfY()] / Math.min(lengthOfX(), lengthOfY()));
     }
 
-    public int getMinEditDistance() {
-        calculateLcs();
-        return lengthOfX() + lengthOfY() - 2 * abs(getLcsLength());
-    }
+
 
     public List<VALUE> backtrack() {
         calculateLcs();
@@ -142,43 +136,9 @@ public abstract class LongestCommonSubsequence<VALUE> {
         }
     }
 
-    public List<DiffEntry<VALUE>> diff() {
-        calculateLcs();
 
-        if (this.diff == null) {
-            this.diff = new ArrayList<DiffEntry<VALUE>>();
-            diff(lengthOfX(), lengthOfY());
-        }
-        return this.diff;
-    }
 
-    private void diff(int i, int j) {
-        calculateLcs();
 
-        while (!(i == 0 && j == 0)) {
-            if (i > 0 && j > 0 && isXYEqual(i, j)) {
-                this.diff.add(new DiffEntry<VALUE>(DiffType.NONE,
-                        valueOfXInternal(i)));
-                i--;
-                j--;
-
-            } else {
-                if (j > 0 && (i == 0 || c[i][j - 1] >= c[i - 1][j])) {
-                    this.diff.add(new DiffEntry<VALUE>(DiffType.ADD,
-                            valueOfYInternal(j)));
-                    j--;
-
-                } else if (i > 0 && (j == 0 || c[i][j - 1] < c[i - 1][j])) {
-
-                    this.diff.add(new DiffEntry<VALUE>(DiffType.REMOVE,
-                            valueOfXInternal(i)));
-                    i--;
-                }
-            }
-        }
-
-        Collections.reverse(this.diff);
-    }
 
     @Override
     public String toString() {
@@ -229,64 +189,8 @@ public abstract class LongestCommonSubsequence<VALUE> {
 
     }
 
-    public static enum DiffType {
 
-        ADD("+", "add"), REMOVE("-", "remove"), NONE(" ", "none");
 
-        private String val;
-        private String name;
 
-        DiffType(String val, String name) {
-            this.val = val;
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return val;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getVal() {
-            return val;
-        }
-    }
-
-    public static class DiffEntry<VALUE> {
-
-        private DiffType type;
-        private VALUE value;
-
-        public DiffEntry(DiffType type, VALUE value) {
-            super();
-            this.type = type;
-            this.value = value;
-        }
-
-        public DiffType getType() {
-            return type;
-        }
-
-        public void setType(DiffType type) {
-            this.type = type;
-        }
-
-        public VALUE getValue() {
-            return value;
-        }
-
-        public void setValue(VALUE value) {
-            this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return type.toString() + value.toString();
-        }
-
-    }
 
 }

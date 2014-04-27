@@ -33,36 +33,4 @@ public class LcsString extends LongestCommonSubsequence<Character> {
         return y.charAt(index);
     }
 
-    public String getHtmlDiff() {
-        DiffType type = null;
-        List<DiffEntry<Character>> diffs = diff();
-        StringBuffer buf = new StringBuffer();
-
-        for (DiffEntry<Character> entry : diffs) {
-            if (type != entry.getType()) {
-                if (type != null) {
-                    buf.append("</span>");
-                }
-                buf.append("<span class=\"" + entry.getType().getName() + "\">");
-                type = entry.getType();
-            }
-            buf.append(escapeHtml(entry.getValue()));
-        }
-        buf.append("</span>");
-        return buf.toString();
-    }
-
-    private String escapeHtml(Character ch) {
-        switch (ch) {
-            case '<':
-                return "&lt;";
-            case '>':
-                return "&gt;";
-            case '"':
-                return "\\&quot;";
-            default:
-                return ch.toString();
-        }
-    }
-
 }
