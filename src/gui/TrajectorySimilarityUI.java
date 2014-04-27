@@ -5,12 +5,24 @@
  */
 package gui;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JFileChooser;
+import org.jdesktop.swingx.JXMapViewer;
+
+import org.jdesktop.swingx.mapviewer.GeoPosition;
+import org.jdesktop.swingx.mapviewer.Waypoint;
+import org.jdesktop.swingx.mapviewer.WaypointPainter;
+import org.jdesktop.swingx.mapviewer.WaypointRenderer;
+import org.jdesktop.swingx.painter.CompoundPainter;
+
 import trajectorysimilarity.Coords;
 import trajectorysimilarity.TrajectorySimilarity;
 
@@ -37,6 +49,8 @@ public class TrajectorySimilarityUI extends javax.swing.JFrame {
     private void initComponents() {
 
         fileChooser = new javax.swing.JFileChooser();
+        map = new javax.swing.JFrame();
+        jXMapKit1 = new org.jdesktop.swingx.JXMapKit();
         jPanel1 = new javax.swing.JPanel();
         label1 = new javax.swing.JLabel();
         OpenFile1 = new javax.swing.JButton();
@@ -51,6 +65,21 @@ public class TrajectorySimilarityUI extends javax.swing.JFrame {
 
         fileChooser.setCurrentDirectory(new java.io.File("/home/takis/NetBeansProjects/TrajectorySimilarity/datasets"));
         fileChooser.setDialogTitle("Choose a File");
+
+        map.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jXMapKit1.setDefaultProvider(org.jdesktop.swingx.JXMapKit.DefaultProviders.OpenStreetMaps);
+
+        javax.swing.GroupLayout mapLayout = new javax.swing.GroupLayout(map.getContentPane());
+        map.getContentPane().setLayout(mapLayout);
+        mapLayout.setHorizontalGroup(
+            mapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jXMapKit1, javax.swing.GroupLayout.DEFAULT_SIZE, 703, Short.MAX_VALUE)
+        );
+        mapLayout.setVerticalGroup(
+            mapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jXMapKit1, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -229,7 +258,63 @@ public class TrajectorySimilarityUI extends javax.swing.JFrame {
         TrajectorySimilarity.setEpsilon(Double.parseDouble(epsilon.getText()));
         long start = System.currentTimeMillis();
         text.setText(TrajectorySimilarity.computeSimilarity().toString());
-        time.setText((System.currentTimeMillis()- start)+ "ms");
+        time.setText((System.currentTimeMillis() - start) + "ms");
+        map.pack();
+        map.setVisible(true);
+        jXMapKit1.setAddressLocation(new GeoPosition(39.9035, 116.40048));
+        jXMapKit1.setAddressLocation(new GeoPosition(39.94226, 116.30256));
+        
+        Set<MyWaypoint> waypoints = new HashSet<>();
+        for (Coords coord : TrajectorySimilarity.getFirst()) {
+            waypoints.add(new MyWaypoint("a".charAt(0), coord.getLatitude(), coord.getLongtitude()));
+        }
+        for (Coords coord : TrajectorySimilarity.getSecond()) {
+            waypoints.add(new MyWaypoint("b".charAt(0), coord.getLatitude(), coord.getLongtitude()));
+        }
+
+        //crate a WaypointPainter to draw the points
+        WaypointPainter painter = new WaypointPainter();
+
+        painter.setRenderer(new WaypointRenderer() {
+            @Override
+            public boolean paintWaypoint(Graphics2D g, JXMapViewer map, Waypoint wp) {
+                MyWaypoint mw = (MyWaypoint)wp;
+                if(mw.getId()=='a'){
+                   g.setColor(Color.RED); 
+                }
+                else{
+                   g.setColor(Color.BLUE); 
+                }
+                
+                g.drawLine(-5, -5, +5, +5);
+                g.drawLine(-5, +5, +5, -5);
+                return true;
+            }
+        });
+
+               jXMapKit1.getMainMap().setOverlayPainter(painter);
+        //Set<Waypoint> waypoints2 = new HashSet<>();
+        
+        painter.setWaypoints(waypoints);
+        //crate a WaypointPainter to draw the points
+        //WaypointPainter painter2 = new WaypointPainter();
+        //painter.setWaypoints(waypoints2);
+        //painter2.setRenderer(new WaypointRenderer() {
+        //   @Override
+        //   public boolean paintWaypoint(Graphics2D g, JXMapViewer map, Waypoint wp) {
+        //       g.setColor(Color.BLUE);
+        //      g.drawLine(-5, -5, +5, +5);
+        //     g.drawLine(-5, +5, +5, -5);
+        //    return true;
+        //     }
+        //});
+
+//        jXMapKit1.getMainMap().setOverlayPainter(painter2);
+        // CompoundPainter cp = new CompoundPainter();
+        // cp.setPainters(painter2,painter);
+        // cp.setCacheable(false);
+        // jXMapKit1.getMainMap().setOverlayPainter(cp);
+
     }//GEN-LAST:event_ComputeActionPerformed
 
     private void epsilonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_epsilonActionPerformed
@@ -280,8 +365,10 @@ public class TrajectorySimilarityUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private org.jdesktop.swingx.JXMapKit jXMapKit1;
     private javax.swing.JLabel label1;
     private javax.swing.JLabel label2;
+    private javax.swing.JFrame map;
     private javax.swing.JTextField text;
     private javax.swing.JLabel time;
     // End of variables declaration//GEN-END:variables
