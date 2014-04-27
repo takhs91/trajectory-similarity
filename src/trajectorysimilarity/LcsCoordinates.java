@@ -11,6 +11,7 @@ import static java.lang.Math.abs;
  *
  * @author takis
  */
+//Implementation of the abstract LogestCommonSubsequence for geo coordinates
 public class LcsCoordinates extends LongestCommonSubsequence<Coords> {
 
     private Coords[] x;

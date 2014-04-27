@@ -334,17 +334,12 @@ public class TrajectorySimilarityUI extends javax.swing.JFrame {
             time.setText((System.currentTimeMillis() - start) + "ms");
             map.pack();
             map.setVisible(true);
-            if(points.isSelected()){
-               drawAsPoints(); 
+            if (points.isSelected()) {
+                drawAsPoints();
+            } else {
+                drawAsPath();
             }
-            else{
-               drawAsPath();
-            }
-
-            
         }
-
-
     }//GEN-LAST:event_ComputeActionPerformed
 
     private void drawAsPoints() {
@@ -398,7 +393,7 @@ public class TrajectorySimilarityUI extends javax.swing.JFrame {
         }
         final List<GeoPosition> region3 = new ArrayList<>();
         if (TrajectorySimilarity.getSubset() != null) {
-            
+
             for (Coords coord : TrajectorySimilarity.getSubset()) {
                 region3.add(new GeoPosition(coord.getLatitude(), coord.getLongtitude()));
             }
@@ -541,11 +536,10 @@ public class TrajectorySimilarityUI extends javax.swing.JFrame {
             map.pack();
             map.setVisible(true);
 
-            if(points.isSelected()){
-               drawAsPoints(); 
-            }
-            else{
-               drawAsPath();
+            if (points.isSelected()) {
+                drawAsPoints();
+            } else {
+                drawAsPath();
             }
         }
         TrajectorySimilarity.setSubset(null);

@@ -25,29 +25,29 @@ public class TrajectorySimilarity {
     private static Coords[] subset;
     private static Double epsilon;
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-//        LcsString seq = new LcsString("<p>the quick brown fox</p>", "<p>the <b>Fast</b> brown dog</p>");
-//        System.out.println("LCS: " + seq.getLcsLength());
-//        System.out.println("Edit Dist: " + seq.getMinEditDistance());
-//        System.out.println("Backtrack: " + seq.backtrack());
-
-        //     Coords[] first;
-        //    Coords[] second;
-        first = readDatafromFile("/1000Points/5099.txt");
-        second = readDatafromFile("/10000Points/5075.txt");
-        LcsCoordinates test = new LcsCoordinates(first, second, 0.01);
-        System.out.println("LCS: " + test.calculateLcsGetFirstMatch());
-        System.out.println("LCS: " + test.getLcsLength());
-        //   System.out.println("Edit Dist: " + test.getMinEditDistance());
-        //  System.out.println("Backtrack: " + test.backtrack().toString());
-        System.out.println("Similarity: " + test.getSimilarity());
-        epsilon = 0.01;
-        System.out.println("most similar: " + getMostSimilarSubset(999));
-
-    }
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String[] args) {
+////        LcsString seq = new LcsString("<p>the quick brown fox</p>", "<p>the <b>Fast</b> brown dog</p>");
+////        System.out.println("LCS: " + seq.getLcsLength());
+////        System.out.println("Edit Dist: " + seq.getMinEditDistance());
+////        System.out.println("Backtrack: " + seq.backtrack());
+//
+//        //     Coords[] first;
+//        //    Coords[] second;
+//        first = readDatafromFile("/1000Points/5099.txt");
+//        second = readDatafromFile("/10000Points/5075.txt");
+//        LcsCoordinates test = new LcsCoordinates(first, second, 0.01);
+//        System.out.println("LCS: " + test.calculateLcsGetFirstMatch());
+//        System.out.println("LCS: " + test.getLcsLength());
+//        //   System.out.println("Edit Dist: " + test.getMinEditDistance());
+//        //  System.out.println("Backtrack: " + test.backtrack().toString());
+//        System.out.println("Similarity: " + test.getSimilarity());
+//        epsilon = 0.01;
+//        System.out.println("most similar: " + getMostSimilarSubset(999));
+//
+//    }
 
     public static Double computeSimilarity() {
         if (first != null && second != null && getEpsilon() != null) {

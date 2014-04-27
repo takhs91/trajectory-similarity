@@ -68,6 +68,8 @@ public abstract class LongestCommonSubsequence<VALUE> {
         }
     }
 
+//Method needed for the most similar subtrajectory in order to know
+    //where to search after
     public Integer calculateLcsGetFirstMatch() {
 //        if (c != null) {
 //            return;
